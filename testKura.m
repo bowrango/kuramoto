@@ -22,7 +22,8 @@ J(1:nOsc+1:end)=0;
 
 tstop = 5; tstep = 1e-3;
 As = 2; Ac = 5; An = 0.1;
-F = @(t,X) KuramotoSin(X, Ac*t/tstop, As, nOsc, J);
+% F = @(t,X) KuramotoSin(X, Ac*t/tstop, As, nOsc, J);
+F = @(t,X) phaseModel(X, Ac*t/tstop, As, nOsc, J);
 G = @(t,X) An*eye(nOsc);
 
 rng(0)

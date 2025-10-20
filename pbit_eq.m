@@ -1,4 +1,3 @@
-% Matt Bowring
 
 % Compute the stationary distribution of p-bits using 3 methods.
 
@@ -9,7 +8,7 @@
 
 % See sota [3];
 
-n = 10;
+n = 12;
 N = 2^n;
 % beta = 0.1;
 beta = 0.1;
@@ -21,7 +20,7 @@ W = (W + W')/2;
 h = diag(W);
 W(1:n+1:end)=0;
 
-% Markov Transition
+% 1. Markov Transition
 T1 = onetrans(W, h, beta);
 T2 = systrans(W, h, beta);
 mc = dtmc(T1);
@@ -35,7 +34,7 @@ probev = ev(:,1) / sum(ev(:,1));
 % numGibbsSteps = ceil(n*tmix);
 numGibbsSteps = 1e5;
 
-% Gibbs sampling
+% 2. Gibbs sampling
 pbits = sign(randn(n, 1));
 counts = zeros(2^n, 1);
 for t = 1:numGibbsSteps
@@ -56,7 +55,7 @@ probg = counts/sum(counts);
 % TV = 0.5 * sum(abs(probg - probmc));
 % assert(TV < epsilon);
 
-% Boltzmann
+% 3. Boltzmann
 states = (2*(dec2bin(0:N-1, n)=='1') - 1)';
 E = (sum(states.*(W*states), 1)/2 + h'*states)';
 expE = exp(-beta.*E);
@@ -75,10 +74,10 @@ probb = expE/sum(expE);
 figure
 grid on
 hold on
-plot(sort(probg), 'r.')
-plot(sort(probb), 'm-')
+plot(sort(probg), 'bx')
+plot(sort(probb), 'bo')
 % plot(sort(probev), 'g-')
-plot(sort(probmc), 'k-')
+plot(sort(probmc), 'r-')
 xlim([0 N])
 xlabel('State')
 ylabel('Probability')
@@ -107,7 +106,7 @@ end
 end
 
 function P = systrans(W, h, beta)
-% Transition matrix for all p-bit updates (system scan)
+% Transition matrix for an all p-bit update (system scan)
 % P(i,j) is the probability state i transitions to state j.
 % Rows sum to 1. All elements are non-zero.
 n = size(W, 1);

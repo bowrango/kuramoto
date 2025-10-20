@@ -1,4 +1,5 @@
 % GSet Benchmark
+
 nOsc = 800;
 h = zeros(nOsc, 1);
 G1 = importdata('g1.rud', ' ', 1);
@@ -26,10 +27,17 @@ obj = sde(F, G, 'StartState', rand(nOsc, 1));
 
 figure; plot(T, S); box on; grid on;
 
-cuts = T;
+cuts = zeros(size(T));
 for k = 1:length(T)
-ix = find(mod(round(S(k,:)), 2));
-cuts(k) = -sum(sum(J(ix, setdiff(1:nOsc, ix))));
+    x = X(k,:);
+    % Ising function
+    % Convert phases to spins
+    s = ones(nOsc,1);
+    odds = find(mod(round(x), 2));
+    s(odds) = -1;
+    % Convert to binary
+    bits = (s+1)/2;
+    cuts(k) = (~bits.'*(-J)*bits);
 end
 figure; plot(T, cuts);
 

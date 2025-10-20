@@ -1,3 +1,6 @@
+% https://arxiv.org/pdf/2510.12934
+% http://proceedings.mlr.press/v38/carlson15.pdf
+
 numSpins = 100;        
 numSamples = 1000;      
 numEpochs = 500;         
@@ -11,7 +14,7 @@ J = triu(J,1);
 J = J + J';                  
 h = zeros(1, numSpins);     
 
-% Contrastive Divergence 
+% Contrastive Divergence for RBMs
 for epoch = 1:numEpochs
     % Positive phase
     pos_corr = (data' * data) / numSamples;

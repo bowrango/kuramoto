@@ -1,4 +1,4 @@
-% Load or generate the time-domain signal
+
 fs = 100e3; % Hz
 t = 0:1/fs:1e-2;
 f0 = 9.5e3;

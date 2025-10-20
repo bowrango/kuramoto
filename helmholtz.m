@@ -20,15 +20,15 @@ drift = @(t,X) phaseModel(X, coup(t, K), sync(t, Ks), J);
 Kn = 0.1;
 diffusion = @(t,X) Kn*eye(d);
 
-% x0 = rand(d,1);
-% model = sde(drift, diffusion, StartState=x0);
-% X = simulate(model, numSamples, NTrials=numPaths);
-% X = permute(X, [2 1 3]);
+x0 = rand(d,1);
+model = sde(drift, diffusion, StartState=x0);
+X = simulate(model, numSamples, NTrials=numPaths);
+X = permute(X, [2 1 3]);
 
-X = zeros(d,numSamples,numPaths);
-for ii=1:numPaths
-    X(:,:,ii) = isotropicOU2D(rand(1,d), numSamples);
-end
+% X = zeros(d,numSamples,numPaths);
+% for ii=1:numPaths
+%     X(:,:,ii) = isotropicOU2D(rand(1,d), numSamples);
+% end
 
 figure
 plot(X(:,:,1)')
@@ -129,13 +129,4 @@ for i = 2:numPoints
     [~, idx(i)] = max(distances);
 end
 S = P(:, idx);
-end
-
-function dxdt = phaseModel(x, K, Ks, J)
-n = length(x);
-dxdt = zeros(n,1);
-for ii = 1:n
-    dxdt(ii) = -K*( J(ii,:)*sin(pi*(x(ii) - x)) );
-end
-dxdt = (dxdt - Ks*sin(2*pi*x))/pi;
 end
