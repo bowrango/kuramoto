@@ -89,7 +89,7 @@ coup = @(t, args) t*args.k;
 % coup = @(t, args) 7*tanh(cos(2*pi.*t./args.T));
 
 % Sync
-Ks = 5;
+Ks = 5.3;
 sarg.T = tstop/10;
 sarg.Ks = Ks;
 sarg.k = Ks/tstop;
@@ -133,7 +133,7 @@ for k = 1:length(T)
 end
 
 hdl = tiledlayout(4,1);
-title(hdl, "n="+string(nOsc)+" oscillators, random J<0")
+title(hdl, "n="+string(nOsc)+" oscillators, randn J_{ij}<0")
 
 nexttile
 plot(T, X)
@@ -153,7 +153,7 @@ plot(T, cuts, '-x')
 xlim([0 tstop])
 % ylabel('Ising')
 ylabel('Cut')
-legend('groundstate', 'value')
+legend('groundstate', 'value', Location='best')
 grid on
 hold off
 
@@ -182,3 +182,7 @@ hold off
 
 % figure
 % plot(T, order)
+
+dir = "results/";
+filename = replace(string(datetime('now')), " ", "-")+".png";
+saveas(gcf, dir+filename)
